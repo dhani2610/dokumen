@@ -2,15 +2,8 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Kandidat;
-use App\Models\Kegiatan;
-use App\Models\Suara;
-use App\Models\User;
-use Carbon\Carbon;
-use DateTime;
+use App\Models\Informasi;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Redirect;
 
 class HomeController extends Controller
 {
@@ -22,6 +15,7 @@ class HomeController extends Controller
 
     public function home(Request $request){
         $data['page_title'] = 'Home';
+        $data['info'] = Informasi::first();
 
 		return view('landing.home',$data);
     }

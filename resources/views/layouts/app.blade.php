@@ -23,8 +23,8 @@
 
  
 
-  <link rel="apple-touch-icon" sizes="76x76" href="{{asset('assets/img/logo-kopi.png')}}">
-  <link rel="icon" type="image/png" href="{{asset('assets/img/logo-kopi.png')}}">
+  <link rel="apple-touch-icon" sizes="76x76" href="{{asset('assets/img/logo-doc.png')}}">
+  <link rel="icon" type="image/png" href="{{asset('assets/img/logo-doc.png')}}">
   <title>
     Dashboard - {{ $page_title ?? '-'}}
   </title>

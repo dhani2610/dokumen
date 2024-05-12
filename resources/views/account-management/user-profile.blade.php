@@ -13,11 +13,7 @@
             <div class="row gx-4">
                 <div class="col-auto">
                     <div class="avatar avatar-xl position-relative">
-                        @if (auth()->user()->foto != null)
-                        <img src="{{ asset('assets/img/foto_user/'. auth()->user()->foto) }}" alt="..." class="w-100 border-radius-lg shadow-sm">
-                        @else
                         <img src="../assets/img/blank-logo.png" alt="..." class="w-100 border-radius-lg shadow-sm">
-                        @endif
                         {{-- <a href="javascript:;" class="btn btn-sm btn-icon-only bg-gradient-light position-absolute bottom-0 end-0 mb-n2 me-n2">
                             <i class="fa fa-pen top-0" data-bs-toggle="tooltip" data-bs-placement="top" title="Edit Image"></i>
                         </a> --}}
@@ -33,17 +29,6 @@
                         </p>
                     </div>
                 </div>
-                @if (Auth::user()->role == 'Sekertaris')
-                    <div class="col-lg-4 col-md-6 my-sm-auto ms-sm-auto me-sm-0 mx-auto mt-3">
-                        <div class="nav-wrapper position-relative end-0">
-                            @if (Auth::user()->vidio_diri != null)
-                            <iframe src="{{ Auth::user()->vidio_diri }}" frameborder="0"></iframe>
-                            @else
-                            <span>Sekertaris Tidak memiliki Vidio diri!</span>
-                            @endif
-                        </div>
-                    </div>
-                @endif
             </div>
         </div>
     </div>
@@ -83,19 +68,6 @@
                         </div>
                     @endif
                     <div class="row">
-                        <div class="col-md-12">
-                            <div class="form-group">
-                                <label for="user-name" class="form-control-label">{{ __('Foto Profile') }}</label>
-                                <div class="@error('user.name')border border-danger rounded-3 @enderror">
-
-                                    <input name="foto" type="file" class="dropify" data-height="200" data-max-file-size="500K" data-allowed-file-extensions="jpg png jpeg"    
-                                    data-default-file="{{ asset('assets/img/foto_user/'.auth()->user()->foto) }}" value="{{auth()->user()->foto}}" />
-                                        @error('foto')
-                                            <p class="text-danger text-xs mt-2">{{ $message }}</p>
-                                        @enderror
-                                </div>
-                            </div>
-                        </div>
                         <div class="col-md-6">
                             <div class="form-group">
                                 <label for="user-name" class="form-control-label">{{ __('Full Name') }}</label>
@@ -109,6 +81,15 @@
                         </div>
                         <div class="col-md-6">
                             <div class="form-group">
+                                <label for="">Stambuk / NIDN</label>
+                                <input type="number" class="form-control" placeholder="Stambuk / NIDN" name="stambuk" id="stambuk" aria-label="stambuk" aria-describedby="stambuk" value="{{ old('stambuk') ?? auth()->user()->stambuk }}">
+                                @error('stambuk')
+                                    <p class="text-danger text-xs mt-2">{{ $message }}</p>
+                                @enderror
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
                                 <label for="user-email" class="form-control-label">{{ __('Email') }}</label>
                                 <div class="@error('email')border border-danger rounded-3 @enderror">
                                     <input class="form-control" value="{{ auth()->user()->email }}" type="email" placeholder="@example.com" id="user-email" name="email">
@@ -118,223 +99,51 @@
                                 </div>
                             </div>
                         </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="">Phone</label>
+                                <input type="number" class="form-control" placeholder="N0 Handphone" name="phone" id="phone" aria-label="phone" aria-describedby="phone" value="{{ old('phone') ?? auth()->user()->phone  }}">
+                                @error('phone')
+                                  <p class="text-danger text-xs mt-2">{{ $message }}</p>
+                                @enderror
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="">Program Studi</label>
+                                <select name="program_studi" id="" class="form-control">
+                                    <option value="">Pilih Program Studi</option>
+                                    @foreach ($program as $p)
+                                        <option value="{{ $p->id }}" {{ $p->id == Auth::user()->program_studi ? 'selected' : '' }}>{{ $p->program }}</option>
+                                    @endforeach
+                                </select>
+                                @error('program_studi')
+                                  <p class="text-danger text-xs mt-2">{{ $message }}</p>
+                                @enderror
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="">Fakultas</label>
+                                <select name="fakultas" id="" class="form-control">
+                                    <option value="">Pilih Fakultas</option>
+                                    @foreach ($fakultas as $f)
+                                        <option value="{{ $f->id }}" {{ $f->id == Auth::user()->fakultas ? 'selected' : '' }}>{{ $f->fakultas }}</option>
+                                    @endforeach
+                                </select>
+                                @error('fakultas')
+                                  <p class="text-danger text-xs mt-2">{{ $message }}</p>
+                                @enderror
+                            </div>
+                        </div>
                     </div>
-                    <div class="row">
-                        @if (auth()->user()->role == 'Agensi' || auth()->user()->role == 'Sekertaris' || auth()->user()->role == 'Customer')
-                        <div class="col-md-6">
-                            <div class="form-group">
-                                <label for="user.phone" class="form-control-label">{{ __('Bisnis Tipe') }}</label>
-                                @php
-                                    $tipe_bisnis = App\Models\Bisnis::get();
-                                @endphp  
-                                <div class="@error('bisnis_tipe')border border-danger rounded-3 @enderror">
-                                        <select id="tipe_bisnis" class="form-control" name="bisnis_tipe" required>
-                                            <option value="">Pilih Bisnis Tipe</option>
-                                            @foreach ($tipe_bisnis as $tb)
-                                                <option value="{{ $tb->id }}" {{ $tb->id == auth()->user()->bisnis_tipe ? 'selected' : '' }}>{{ $tb->tipe_bisnis }}</option>
-                                            @endforeach
-                                        </select>
-                                        @error('bisnis_tipe')
-                                            <p class="text-danger text-xs mt-2">{{ $message }}</p>
-                                        @enderror
-                                </div>
-                            </div>
-                        </div>
-                        @endif
-                        <div class="col-md-6">
-                            <div class="form-group">
-                                <label for="user.phone" class="form-control-label">{{ __('Jenis Kelamin') }}</label>
-                                <div class="@error('Jenis_Kelamin')border border-danger rounded-3 @enderror">
-                                        <select name="jenis_kelamin" class="form-control" id="" required>
-                                            <option value="">Pilih Jenis Kelamin</option>
-                                            <option value="Laki-Laki" {{ auth()->user()->jenis_kelamin == 'Laki-Laki' ? 'selected' : '' }}>Laki-Laki</option>
-                                            <option value="Perempuan" {{ auth()->user()->jenis_kelamin == 'Perempuan' ? 'selected' : '' }}>Perempuan</option>
-                                        </select>
-                                        @error('jenis_kelamin')
-                                            <p class="text-danger text-xs mt-2">{{ $message }}</p>
-                                        @enderror
-                                </div>
-                            </div>
-                        </div>
-
-                        @if (auth()->user()->role == 'Sekertaris' || auth()->user()->role == 'Customer')
-
-                        @if (auth()->user()->role == 'Sekertaris')
-                        <div class="col-md-6">
-                            <div class="form-group">
-                                <label for="user.phone" class="form-control-label">Vidio Diri (Link Youtube)</label>
-                                <div class="@error('vidio_diri')border border-danger rounded-3 @enderror">
-                                    <input class="form-control" value="{{ auth()->user()->vidio_diri }}" type="text" placeholder="Link Embed Youtube" id="user-email" name="vidio_diri">
-                                    @error('vidio_diri')
-                                        <p class="text-danger text-xs mt-2">{{ $message }}</p>
-                                    @enderror
-                                </div>
-                            </div>
-                        </div>
-                        @endif
-                        <div class="col-md-6">
-                            <div class="form-group">
-                                <label for="user.phone" class="form-control-label">Linkedin (Link)</label>
-                                <div class="@error('linkedin')border border-danger rounded-3 @enderror">
-                                    <input class="form-control" value="{{ auth()->user()->linkedin }}" type="text" placeholder="Link Linkedin" id="user-email" name="linkedin">
-                                    @error('linkedin')
-                                        <p class="text-danger text-xs mt-2">{{ $message }}</p>
-                                    @enderror
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-md-6">
-                            <div class="form-group">
-                                <label for="user.phone" class="form-control-label">No WhatsApp</label>
-                                <div class="@error('no_wa')border border-danger rounded-3 @enderror">
-                                    <input class="form-control" value="{{ auth()->user()->no_wa }}" type="number" placeholder="No WhatsApp" id="user-email" name="no_wa">
-                                    @error('no_wa')
-                                        <p class="text-danger text-xs mt-2">{{ $message }}</p>
-                                    @enderror
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-md-6">
-                            <div class="form-group">
-                                <label for="user.phone" class="form-control-label">Tanggal Lahir</label>
-                                <div class="@error('no_wa')border border-danger rounded-3 @enderror">
-                                    <input class="form-control" value="{{ auth()->user()->tanggal_lahir }}" type="date" placeholder="No WhatsApp" id="user-email" name="tanggal_lahir">
-                                    @error('no_wa')
-                                        <p class="text-danger text-xs mt-2">{{ $message }}</p>
-                                    @enderror
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-md-12">
-                            <div class="form-group">
-                                <label for="user.phone" class="form-control-label">{{ __('Tentang Diri') }}</label>
-                                <div class="@error('tentang_diri')border border-danger rounded-3 @enderror">
-                                        <textarea class="form-control" name="tentang_diri">{{ auth()->user()->tentang_diri }}</textarea>
-                                        @error('tentang_diri')
-                                            <p class="text-danger text-xs mt-2">{{ $message }}</p>
-                                        @enderror
-                                </div>
-                            </div>
-                        </div>
-                        @endif
-
-                        
-                    </div>
-                  
+                
                     <div class="d-flex justify-content-end">
                         <button type="submit" class="btn bg-gradient-dark btn-md mt-4 mb-4">{{ 'Simpan' }}</button>
                     </div>
                 </form>
             </div>
         </div>
-        @if (Auth::user()->role == 'Agensi')
-        @if(session('need_referal'))
-            <div class="m-3  alert alert-danger alert-dismissible fade show" id="alert-success" role="alert">
-                <span class="alert-text text-white">
-                {{ session('need_referal') }}</span>
-                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close">
-                    <i class="fa fa-close" aria-hidden="true"></i>
-                </button>
-            </div>
-        @endif
-        <div class="card mt-3" id="referal">
-            <div class="card-header pb-0 px-3">
-                <h6 class="mb-0">{{ __('Referal Base') }}</h6>
-            </div>
-            <div class="card-body pt-4 p-3">
-                <form action="{{ url('referal-update/'.Auth::user()->id) }}" method="POST" role="form text-left" enctype="multipart/form-data">
-                    @csrf
-                    <div class="row">
-                        <div class="col-md-12">
-                            <div class="form-group">
-                                <label for="user-name" class="form-control-label">{{ __('Referal Code') }}</label>
-                                <div class="@error('user.name')border border-danger rounded-3 @enderror">
-                                    @php
-                                        if (Auth::user()->role == 'Agensi') {
-                                            $val = Auth::user()->referal_base;
-                                        }else{
-                                            $val = Auth::user()->referal_code;
-                                        }
-                                    @endphp
-                                    <input class="form-control"  type="text" placeholder="Referal Code" {{ Auth::user()->referal_base != null || Auth::user()->referal_code != null ? 'readonly' : '' }} id="referal" value="{{ $val }}" name="code_referal">
-                                        @error('foto')
-                                            <p class="text-danger text-xs mt-2">{{ $message }}</p>
-                                        @enderror
-
-                                        @if (Auth::user()->referal_base == null || Auth::user()->referal_code == null)
-                                            <small id="result-msg"></small>
-                                        @endif
-                                        <br>
-                                        @if ($val == null)
-                                            <small style="color: red">*Generate code referal anda untuk pertama kali,code referal tidak bisa di ganti apabila sudah di simpan!</small>
-                                        @endif
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    @if ($val == null)
-                    <div class="d-flex justify-content-end">
-                        <button type="submit" class="btn btn-update-ref bg-gradient-dark btn-md mt-4 mb-4">{{ 'Simpan' }}</button>
-                    </div>
-                    @endif
-                  
-                </form>
-
-            </div>
-        </div>
-        @endif
-
-        <div class="card mt-3" id="referal">
-            @if(session('success_update_pw'))
-                <div class="m-3  alert alert-success alert-dismissible fade show" id="alert-success" role="alert">
-                    <span class="alert-text text-white">
-                    {{ session('success_update_pw') }}</span>
-                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close">
-                        <i class="fa fa-close" aria-hidden="true"></i>
-                    </button>
-                </div>
-            @endif
-            @if(session('failed__update_pw'))
-                <div class="m-3  alert alert-danger alert-dismissible fade show" id="alert-success" role="alert">
-                    <span class="alert-text text-white">
-                    {{ session('failed__update_pw') }}</span>
-                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close">
-                        <i class="fa fa-close" aria-hidden="true"></i>
-                    </button>
-                </div>
-            @endif
-            <div class="card-header pb-0 px-3">
-                <h6 class="mb-0">{{ __('Ubah Password') }}</h6>
-            </div>
-            <div class="card-body pt-4 p-3">
-                <form action="{{ url('password-update') }}" method="POST" role="form text-left" enctype="multipart/form-data">
-                    @csrf
-                    <div class="row">
-                        <div class="col-md-6">
-                            <div class="form-group">
-                                <label for="user-name" class="form-control-label">{{ __('Password Lama') }}</label>
-                                <div class="@error('password')border border-danger rounded-3 @enderror">
-                                    <input class="form-control" name="password"  type="text" placeholder="Masukan Password Lama" id="referal" value="" >
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-md-6">
-                            <div class="form-group">
-                                <label for="user-name" class="form-control-label">{{ __('Password Baru') }}</label>
-                                <div class="@error('password')border border-danger rounded-3 @enderror">
-                                    <input class="form-control" name="new_password"  type="text" placeholder="Masukan Password Baru" id="referal" value="" >
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="d-flex justify-content-end">
-                        <button type="submit" class="btn btn-update-ref bg-gradient-dark btn-md mt-4 mb-4">{{ 'Ubah' }}</button>
-                    </div>
-                </form>
-
-            </div>
-        </div>
-
      
     </div>
 </div>
@@ -356,41 +165,7 @@ input.addEventListener('input', function(event) {
         'referal_base' : value
     }
 
-    $.ajax({
-        type: 'GET',
-        url: '{{ route("cek-referal") }}',
-        data: formData,
-        dataType: 'json',
-        success: function(data) {
-            // Handle respon dari server jika berhasil
-            console.log(data);
-
-            var role =  "{{Auth::user()->role}}";
-
-            if (role == 'Agensi' ) {
-                if (data.result == 'Tidak Ada') {
-                    $('#result-msg').addClass('text-success');
-                    $('#result-msg').html('Code Referal Bisa Dipakai');
-                }else{
-                    $('#result-msg').addClass('text-danger');
-                    $('#result-msg').html('Code Referal Sudah Ada');
-                }
-            }else{
-                if (data.result == 'Ada') {
-                    $('#result-msg').addClass('text-success');
-                    $('#result-msg').html('Code Referal Tersedia : '+data.data.referal_base+ ' ('+data.data.name+')');
-                }else{
-                    $('#result-msg').addClass('text-danger');
-                    $('#result-msg').html('Code Referal Tidak Ada');
-                }
-            }
-        },
-        error: function(xhr, status, error) {
-            // Handle respon dari server jika terjadi kesalahan
-            console.error(xhr.responseText);
-        }
-    });
-
+    
     // Menampilkan nilai input di log
     console.log(value);
 });

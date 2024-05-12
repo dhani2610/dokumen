@@ -6,7 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
     <link rel="stylesheet" href="style.css">
-    <title>Login & Register Sekertaris</title>
+    <title>Login & Register</title>
 
     <style>
       @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700&display=swap');
@@ -281,78 +281,6 @@
 
     <div class="container" id="container">
     
-        <div class="form-container  sign-up">
-         
-          @php
-              $tipe_bisnis = array(
-                  "Perdagangan eceran",
-                  "Jasa konsultasi",
-                  "Manufaktur",
-                  "Teknologi informasi dan layanan terkait",
-                  "Restoran dan layanan makanan",
-                  "Jasa kecantikan dan perawatan pribadi",
-                  "Perdagangan grosir",
-                  "Perbankan dan keuangan",
-                  "Pendidikan dan pelatihan",
-                  "Hiburan dan rekreasi",
-                  "Konstruksi dan pembangunan",
-                  "Transportasi dan logistik",
-                  "Penerbitan dan media",
-                  "Pertanian dan peternakan",
-                  "Kesehatan dan layanan medis",
-                  "Real estat dan properti",
-                  "Otomotif dan perbaikan kendaraan",
-                  "Lingkungan dan energi terbarukan",
-                  "Layanan hukum dan konsultasi hukum",
-                  "Layanan pembersihan dan perawatan rumah tangga"
-              );
-          @endphp 
-            <form action="{{ url('register') }}" method="POST" enctype="multipart/form-data">
-              @csrf
-                <h1>Create Account</h1>
-
-                @if($errors->any())
-                    <div class="mt-3  alert alert-primary alert-dismissible fade show" role="alert">
-                        <span class="alert-text text-white">
-                        {{$errors->first()}}</span>
-                    </div>
-                @endif
-                @if(session('success'))
-                    <div class="m-3  alert alert-success alert-dismissible fade show" id="alert-success" role="alert">
-                        <span class="alert-text text-white">
-                        {{ session('success') }}</span>
-                    </div>
-                @endif  
-                @if(session('failed'))
-                    <div class="m-3  alert alert-danger alert-dismissible fade show" id="alert-danger" role="alert">
-                        <span class="alert-text text-white">
-                        {{ session('failed') }}</span>
-                    </div>
-                @endif
-                <select name="role" class="form-control" id="" required>
-                  <option value="">Pilih Tipe Akun</option>
-                  <option value="Sekertaris">Sekertaris</option>
-                  <option value="Customer">Customer</option>
-                </select>
-                <select name="tipe_bisnis" class="select2 form-control" id="" required>
-                  <option value="">Pilih Tipe Bisnis</option>
-                  @foreach ($tipe_bisnis as $tb)
-                        <option value="{{ $tb }}">{{ $tb }}</option>
-                  @endforeach
-                </select>
-    						<input type="text" name="name" placeholder="Nama Lengkap"  required/>
-                <select name="jenis_kelamin" class="form-control" id="" required>
-                  <option value="">Pilih Jenis Kelamin</option>
-                  <option value="Laki-Laki">Laki-Laki</option>
-                  <option value="Perempuan">Perempuan</option>
-                </select>
-    						<input type="email" name="email" placeholder="Email"  required/>
-    						<input type="number" name="age" placeholder="Usia" required />
-                <input type="password" name="password" placeholder="Password" required/>
-                <input type="text" name="referal_code" placeholder="Referal Code" required/>
-                <button type="submit">Sign Up</button>
-            </form>
-        </div>
         <div class="form-container sign-in">
             <form method="POST" action="/login-post">
               @csrf
@@ -375,7 +303,7 @@
                         {{ session('failed') }}</span>
                     </div>
                 @endif
-                <input type="email" name="email" placeholder="Email">
+                <input type="number" min="0" name="stambuk" placeholder="Stambuk / NIDN">
                 <input type="password" name="password" placeholder="Password">
                 <button>Sign In</button>
             </form>
@@ -383,15 +311,12 @@
         <div class="toggle-container">
             <div class="toggle">
                 <div class="toggle-panel toggle-left">
-                    <h1>Pilihlah Sekertaris terbaikmu!</h1>
-                    <p>Begabunglah bersama kami untuk mendapatkan Sekertaris terbaik untuk bisnismu!</p>
+                    <h1>Management Document</h1>
                     <button class="hidden" id="login">Sign In</button>
                 </div>
                 <div class="toggle-panel toggle-right active">
-                    <h1>Pilihlah Sekertaris terbaikmu!</h1>
-                    <p>Begabunglah bersama kami untuk mendapatkan Sekertaris terbaik untuk bisnismu!</p>
-                    <button onclick="location.href='{{ url('register-sekertaris') }}'" class="hidden" id="login">Sign Up Sekertaris</button>
-                    <button onclick="location.href='{{ url('register-customer') }}'" class="hidden" id="login">Sign Up Customer</button>
+                    <h1>Management Document!</h1>
+                    <button onclick="location.href='{{ url('register-user') }}'" class="hidden" id="login">Sign Up</button>
                 </div>
             </div>
         </div>

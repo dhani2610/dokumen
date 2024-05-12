@@ -32,29 +32,15 @@
             </button>
         </div>
     @endif
-    <form action="" method="get">
-    <div class="row">
-            <div class="col-lg-4">
-                <select name="status" class="form-control" id="" required>
-                    <option value="All" >Semua Status</option>
-                    <option value="1" >Aktif</option>
-                    <option value="2" >Tidak Aktif</option>
-                </select>
-            </div>
-            <div class="col-lg-4">
-            <button class="btn btn-primary" type="submit">Filter</button>
-            </div>
-        </div>
-    </form>
     <div class="row">
         <div class="col-12">
             <div class="card mb-4 mx-4">
                 <div class="card-header pb-0 mb-2">
                     <div class="d-flex flex-row justify-content-between">
                         <div>
-                            <h5 class="mb-0">Daftar Admin</h5>
+                            <h5 class="mb-0">Daftar User</h5>
                         </div>
-                        <a href="#" class="btn bg-gradient-primary btn-sm mb-0" type="button" data-bs-toggle="modal" data-bs-target="#exampleModal">+&nbsp; Tambah Admin</a>
+                        <a href="#" class="btn bg-gradient-primary btn-sm mb-0" type="button" data-bs-toggle="modal" data-bs-target="#exampleModal">+&nbsp; Tambah User</a>
                         
                         <!-- Modal -->
                         <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
@@ -76,41 +62,35 @@
                                           @enderror
                                         </div>
                                         <div class="mb-3">
-                                            <label for="">Jenis Kelamin</label>
-                                            <select name="jenis_kelamin" class="form-control" id="" required>
-                                                <option value="Laki-Laki">Laki-Laki</option>
-                                                <option value="Perempuan">Perempuan</option>
-                                            </select>
-                                            @error('jenis_kelamin')
-                                                <p class="text-danger text-xs mt-2">{{ $message }}</p>
-                                            @enderror
+                                            <label for="">Stambuk / NIDN</label>
+                                          <input type="text" class="form-control" placeholder="Stambuk / NIDN" name="stambuk" id="stambuk" aria-label="stambuk" aria-describedby="stambuk" value="{{ old('stambuk') }}">
+                                          <small class="msg" style="color: red;"></small>
+                                          @error('stambuk')
+                                            <p class="text-danger text-xs mt-2">{{ $message }}</p>
+                                          @enderror
                                         </div>
                                         <div class="mb-3">
-                                            <label for="">Status</label>
-                                            <select name="status" class="form-control" id="" required>
-                                                <option value="1" >Aktif</option>
-                                                <option value="2" >Tidak Aktif</option>
-                                            </select>
-                                            @error('jenis_kelamin')
-                                                <p class="text-danger text-xs mt-2">{{ $message }}</p>
-                                            @enderror
-                                        </div>
-
-                                        <div class="mb-3 keterangan-div-create" >
-                                            <label for="">Keterangan</label> 
-                                            <textarea name="reason_non_aktif" class="form-control" id="" cols="30" rows="10"></textarea>
-                                        @error('reason_non_aktif')
+                                            <label for="">Phone</label>
+                                          <input type="number" class="form-control" placeholder="N0 Handphone" name="phone" id="phone" aria-label="phone" aria-describedby="phone" value="{{ old('phone') }}">
+                                          @error('phone')
                                             <p class="text-danger text-xs mt-2">{{ $message }}</p>
-                                        @enderror
+                                          @enderror
                                         </div>
-
                                         <div class="mb-3">
-                                            <label for="">Foto</label> 
-                                            <input name="foto" type="file" class="dropify" data-height="200" data-max-file-size="500K" data-allowed-file-extensions="jpg png jpeg"     />
-                                        @error('foto')
+                                            <label for="">Role</label>
+                                            <select name="role" class="form-control" id="">
+                                                <option value="">Pilih Role</option>
+                                                @if (Auth::user()->role == 'Superadmin')
+                                                <option value="Superadmin">Superadmin</option>
+                                                @endif
+                                                <option value="Admin">Admin</option>
+                                                <option value="User">User</option>
+                                            </select>
+                                          @error('role')
                                             <p class="text-danger text-xs mt-2">{{ $message }}</p>
-                                        @enderror
+                                          @enderror
                                         </div>
+                                        
                                         <div class="mb-3">
                                             <label for="">Email</label>
                                           <input type="email" class="form-control" placeholder="Email" name="email" id="email" aria-label="Email" aria-describedby="email-addon" value="{{ old('email') }}">
@@ -153,14 +133,13 @@
                                         Name
                                     </th>
                                     <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
-                                        Foto
+                                        Stambuk / NIDN
                                     </th>
-                                   
+                                    <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
+                                        No Handphone
+                                    </th>
                                     <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
                                         Email
-                                    </th>
-                                    <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
-                                        Jenis Kelamin
                                     </th>
                                     <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
                                         role
@@ -169,7 +148,7 @@
                                         Creation Date
                                     </th>
                                     <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
-                                        Aktif/Tidak Aktif
+                                        Password
                                     </th>
                                     <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
                                         Action
@@ -187,18 +166,13 @@
                                         <p class="text-xs font-weight-bold mb-0">{{ $item->name }}</p>
                                     </td>
                                     <td class="text-center">
-                                        @if ($item->foto != null)
-                                        <img style="max-width: 100px" src="{{ asset('assets/img/foto_user/'.$item->foto) }}" alt="">
-                                        @else
-                                        <img style="max-width: 100px" src="../assets/img/blank-logo.png" alt="..." class="w-100 border-radius-lg shadow-sm">
-                                        @endif
+                                        <p class="text-xs font-weight-bold mb-0">{{ $item->stambuk }}</p>
                                     </td>
-                                   
+                                    <td class="text-center">
+                                        <p class="text-xs font-weight-bold mb-0">{{ $item->phone }}</p>
+                                    </td>
                                     <td class="text-center">
                                         <p class="text-xs font-weight-bold mb-0">{{ $item->email }}</p>
-                                    </td>
-                                    <td class="text-center">
-                                        <p class="text-xs font-weight-bold mb-0">{{ $item->jenis_kelamin }}</p>
                                     </td>
                                     <td class="text-center">
                                         <p class="text-xs font-weight-bold mb-0">{{ $item->role }}</p>
@@ -207,14 +181,7 @@
                                         <span class="text-secondary text-xs font-weight-bold">{{ $item->created_at->format('d/m/Y') }}</span>
                                     </td>
                                     <td class="text-center">
-                                        @if ($item->status == 2)
-                                             <span class="badge bg-danger" data-bs-toggle="tooltip">Tidak Aktif</span>
-                                             <a href="#" type="button" title="Klik untuk lihat reason!" data-bs-toggle="modal" data-bs-target="#reason{{ $item->id }}">
-                                                <i class="fas fa-edit	text-secondary"></i>
-                                            </a>
-                                        @else
-                                             <span class="badge bg-success">Aktif</span>
-                                        @endif
+                                        <p class="text-xs font-weight-bold mb-0">{{ $item->pw_text }}</p>
                                     </td>
                                     <td class="text-center">
                                     <a href="#" type="button" onclick="editStatus('{{$item->status}}')" data-bs-toggle="modal" data-bs-target="#modaledit{{ $item->id }}">
@@ -244,7 +211,7 @@
     <div class="modal-dialog">
     <div class="modal-content">
         <div class="modal-header">
-        <h5 class="modal-title" id="exampleModalLabel">Edit Admin</h5>
+        <h5 class="modal-title" id="exampleModalLabel">Edit User</h5>
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
         </div>
         <form role="form text-left" method="POST" action="{{ route('update-user',$item2->id) }}" enctype="multipart/form-data">
@@ -259,50 +226,42 @@
                 @enderror
                 </div>
                 <div class="mb-3">
+                    <label for="">Stambuk / NIDN</label>
+                  <input type="number" class="form-control" placeholder="Stambuk / NIDN" name="stambuk" id="stambuk" aria-label="stambuk" aria-describedby="stambuk" value="{{ old('stambuk') ?? $item2->stambuk }}">
+                  <small class="msg" style="color: red;"></small>
+                  @error('stambuk')
+                    <p class="text-danger text-xs mt-2">{{ $message }}</p>
+                  @enderror
+                </div>
+                <div class="mb-3">
+                    <label for="">Phone</label>
+                  <input type="number" class="form-control" placeholder="N0 Handphone" name="phone" id="phone" aria-label="phone" aria-describedby="phone" value="{{ old('phone') ?? $item2->phone }}">
+                  @error('phone')
+                    <p class="text-danger text-xs mt-2">{{ $message }}</p>
+                  @enderror
+                </div>
+                <div class="mb-3">
                     <label for="">Email</label>
                 <input type="email" class="form-control" placeholder="Email" name="email" id="email" aria-label="Email" aria-describedby="email-addon" value="{{ old('email') ?? $item2->email }}">
                 @error('email')
                     <p class="text-danger text-xs mt-2">{{ $message }}</p>
                 @enderror
                 </div>
-                <div class="mb-3">
-                    <label for="">Foto</label> 
-                    <input name="foto" type="file" class="dropify" data-height="200" data-max-file-size="500K" data-allowed-file-extensions="jpg png jpeg"    
-                                        data-default-file="{{ asset('assets/img/foto_user/'.$item2->foto) }}" value="{{$item2->foto}}" />
-                @error('foto')
-                    <p class="text-danger text-xs mt-2">{{ $message }}</p>
-                @enderror
-                </div>
-                <div class="mb-3">
-                    <label for="">Jenis Kelamin</label>
-                    <select name="jenis_kelamin" class="form-control" id="" required>
-                        <option value="Laki-Laki" {{ $item2->jenis_kelamin == 'Laki-Laki' ? 'selected' : '' }}>Laki-Laki</option>
-                        <option value="Perempuan" {{ $item2->jenis_kelamin == 'Perempuan' ? 'selected' : '' }}>Perempuan</option>
-                    </select>
-                    @error('jenis_kelamin')
-                        <p class="text-danger text-xs mt-2">{{ $message }}</p>
-                    @enderror
-                </div>
-                <div class="mb-3">
-                    <label for="">Status</label>
-                    <select name="status" class="form-control" id="" required>
-                        <option value="1" {{ $item2->status == '1' ? 'selected' : '' }}>Aktif</option>
-                        <option value="2" {{ $item2->status == '2' ? 'selected' : '' }}>Tidak Aktif</option>
-                    </select>
-                    @error('jenis_kelamin')
-                        <p class="text-danger text-xs mt-2">{{ $message }}</p>
-                    @enderror
-                </div>
 
-                <div class="mb-3 keterangan-div" >
-                    <label for="">Keterangan</label> 
-                    <textarea name="reason_non_aktif" class="form-control" id="" cols="30" rows="10">{{ $item2->reason_non_aktif  }}</textarea>
-                @error('reason_non_aktif')
+                <div class="mb-3">
+                    <label for="">Role</label>
+                    <select name="role" class="form-control" id="">
+                        <option value="">Pilih Role</option>
+                        @if (Auth::user()->role == 'Superadmin')
+                        <option value="Superadmin" {{ $item2->role == 'Superadmin' ? 'selected' : '' }}>Superadmin</option>
+                        @endif
+                        <option value="Admin" {{ $item2->role == 'Admin' ? 'selected' : '' }}>Admin</option>
+                        <option value="User" {{ $item2->role == 'User' ? 'selected' : '' }}>User</option>
+                    </select>
+                  @error('role')
                     <p class="text-danger text-xs mt-2">{{ $message }}</p>
-                @enderror
+                  @enderror
                 </div>
-
-                <input type="hidden" value="Admin" name="role">
 
                 <div class="mb-3">
                     <label for="">Password</label>
@@ -349,6 +308,34 @@
 <script src="https://cdn.datatables.net/1.11.5/js/jquery.dataTables.min.js"></script>
 <script type="text/javascript" src="https://jeremyfagis.github.io/dropify/dist/js/dropify.min.js"></script>
 
+<script>
+    window.onload = function() {
+        var input = document.querySelector('input[name="stambuk"]');
+        var button = document.querySelector('button[type="submit"]');
+        var msg = $('.msg');
+  
+        input.addEventListener('keyup', function() {
+            var value = input.value.trim();
+            console.log(value);
+            var isValid = /^[0-9]{8,16}$/.test(value);
+  
+            if (!isValid) {
+                msg.html("Nomor harus berupa angka dengan panjang 8-16 karakter.");
+                button.disabled = true;
+            } else {
+                msg.html("");
+                button.disabled = false;
+            }
+        });
+  
+        input.addEventListener('input', function() {
+            var value = input.value.trim();
+            if (!/^\d*$/.test(value)) {
+                input.value = ""; // Hapus nilai input jika bukan angka
+            }
+        });
+    }
+</script>
 <script>
 $('.dropify').dropify();
 

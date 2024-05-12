@@ -15,7 +15,7 @@
   <div class="sidenav-header">
     <i class="fas fa-times p-3 cursor-pointer text-secondary opacity-5 position-absolute end-0 top-0 d-none d-xl-none" aria-hidden="true" id="iconSidenav"></i>
     <a class="align-items-center d-flex m-0 navbar-brand text-wrap" href="{{ route('dashboard') }}">
-        <img src="{{asset('assets/img/logo-pt.jpeg')}}" class="navbar-brand-img h-100" alt="...">
+        <img src="{{asset('assets/img/logo-doc.png')}}" class="navbar-brand-img h-100" alt="...">
         <span class="ms-3 font-weight-bold" style="color: white">Dashboard</span>
     </a>
   </div>
@@ -45,70 +45,71 @@
           <span class="nav-link-text ms-1">Dashboard</span>
         </a>
       </li>
-      @if (Auth::user()->role == 'Superadmin')
+      @if (Auth::user()->role == 'Superadmin' || Auth::user()->role == 'Admin')
     
+          @if (Auth::user()->role == 'Superadmin')
+          <li class="nav-item pb-2">
+            <a class="nav-link nav-link2 {{ (Request::is('user-management') ? 'active' : '') }}" href="{{ url('user-management') }}">
+                <div class="icon icon-shape icon-sm shadow border-radius-md bg-white text-center me-2 d-flex align-items-center justify-content-center">
+                    <i style="font-size: 1rem;" class="fas fa-lg fa-list-ul ps-2 pe-2 text-center text-dark {{ (Request::is('user-management') ? 'text-white' : 'text-dark') }} " aria-hidden="true"></i>
+                </div>
+                <span class="nav-link-text ms-1">User</span>
+            </a>
+          </li>
+          <li class="nav-item pb-2">
+            <a class="nav-link nav-link2 {{ (Request::is('program-studi') ? 'active' : '') }}" href="{{ url('program-studi') }}">
+                <div class="icon icon-shape icon-sm shadow border-radius-md bg-white text-center me-2 d-flex align-items-center justify-content-center">
+                    <i style="font-size: 1rem;" class="fas fa-lg fa-list-ul ps-2 pe-2 text-center text-dark {{ (Request::is('program-studi') ? 'text-white' : 'text-dark') }} " aria-hidden="true"></i>
+                </div>
+                <span class="nav-link-text ms-1">Program Studi</span>
+            </a>
+          </li>
+          <li class="nav-item pb-2">
+            <a class="nav-link nav-link2 {{ (Request::is('fakultas') ? 'active' : '') }}" href="{{ url('fakultas') }}">
+                <div class="icon icon-shape icon-sm shadow border-radius-md bg-white text-center me-2 d-flex align-items-center justify-content-center">
+                    <i style="font-size: 1rem;" class="fas fa-lg fa-list-ul ps-2 pe-2 text-center text-dark {{ (Request::is('fakultas') ? 'text-white' : 'text-dark') }} " aria-hidden="true"></i>
+                </div>
+                <span class="nav-link-text ms-1">Fakultas</span>
+            </a>
+          </li>
+          <li class="nav-item pb-2">
+            <a class="nav-link nav-link2 {{ (Request::is('informasi') ? 'active' : '') }}" href="{{ url('informasi') }}">
+                <div class="icon icon-shape icon-sm shadow border-radius-md bg-white text-center me-2 d-flex align-items-center justify-content-center">
+                    <i style="font-size: 1rem;" class="fas fa-lg fa-list-ul ps-2 pe-2 text-center text-dark {{ (Request::is('informasi') ? 'text-white' : 'text-dark') }} " aria-hidden="true"></i>
+                </div>
+                <span class="nav-link-text ms-1">Informasi</span>
+            </a>
+          </li>
+          @endif
+      
         <li class="nav-item pb-2">
-          <a class="nav-link nav-link2 {{ (Request::is('user-management') ? 'active' : '') }}" href="{{ url('user-management') }}">
+          <a class="nav-link nav-link2 {{ (Request::is('jenis-dokumen') ? 'active' : '') }}" href="{{ url('jenis-dokumen') }}">
               <div class="icon icon-shape icon-sm shadow border-radius-md bg-white text-center me-2 d-flex align-items-center justify-content-center">
-                  <i style="font-size: 1rem;" class="fas fa-lg fa-list-ul ps-2 pe-2 text-center text-dark {{ (Request::is('user-management') ? 'text-white' : 'text-dark') }} " aria-hidden="true"></i>
+                  <i style="font-size: 1rem;" class="fas fa-lg fa-list-ul ps-2 pe-2 text-center text-dark {{ (Request::is('jenis-dokumen') ? 'text-white' : 'text-dark') }} " aria-hidden="true"></i>
               </div>
-              <span class="nav-link-text ms-1">Admin</span>
-          </a>
-        </li>
-        <li class="nav-item pb-2">
-          <a class="nav-link nav-link2 {{ (Request::is('log-action') ? 'active' : '') }}" href="{{ url('log-action') }}">
-              <div class="icon icon-shape icon-sm shadow border-radius-md bg-white text-center me-2 d-flex align-items-center justify-content-center">
-                  <i style="font-size: 1rem;" class="fas fa-lg fa-list-ul ps-2 pe-2 text-center text-dark {{ (Request::is('log-action') ? 'text-white' : 'text-dark') }} " aria-hidden="true"></i>
-              </div>
-              <span class="nav-link-text ms-1">Log Action</span>
-          </a>
-        </li>
-        
-        @elseif (Auth::user()->role == 'Admin')
-        <li class="nav-item pb-2">
-          <a class="nav-link nav-link2 {{ (Request::is('agensi-management') ? 'active' : '') }}" href="{{ url('agensi-management') }}">
-              <div class="icon icon-shape icon-sm shadow border-radius-md bg-white text-center me-2 d-flex align-items-center justify-content-center">
-                  <i style="font-size: 1rem;" class="fas fa-lg fa-list-ul ps-2 pe-2 text-center text-dark {{ (Request::is('agensi-management') ? 'text-white' : 'text-dark') }} " aria-hidden="true"></i>
-              </div>
-              <span class="nav-link-text ms-1">Agensi</span>
+              <span class="nav-link-text ms-1">Manage Jenis Document</span>
           </a>
         </li>
 
         <li class="nav-item pb-2">
-          <a class="nav-link nav-link2 {{ (Request::is('sekertaris-list') ? 'active' : '') }}" href="{{ url('sekertaris-list') }}">
+          <a class="nav-link nav-link2 {{ (Request::is('waiting-approve-dokumen') ? 'active' : '') }}" href="{{ url('waiting-approve-dokumen') }}">
               <div class="icon icon-shape icon-sm shadow border-radius-md bg-white text-center me-2 d-flex align-items-center justify-content-center">
-                  <i style="font-size: 1rem;" class="fas fa-lg fa-list-ul ps-2 pe-2 text-center text-dark {{ (Request::is('sekertaris-list') ? 'text-white' : 'text-dark') }} " aria-hidden="true"></i>
+                  <i style="font-size: 1rem;" class="fas fa-lg fa-list-ul ps-2 pe-2 text-center text-dark {{ (Request::is('waiting-approve-dokumen') ? 'text-white' : 'text-dark') }} " aria-hidden="true"></i>
               </div>
-              <span class="nav-link-text ms-1">Sekertaris</span>
+              <span class="nav-link-text ms-1">Validasi Document</span>
           </a>
         </li>
-
-        <li class="nav-item pb-2">
-          <a class="nav-link nav-link2 {{ (Request::is('customer-list') ? 'active' : '') }}" href="{{ url('customer-list') }}">
-              <div class="icon icon-shape icon-sm shadow border-radius-md bg-white text-center me-2 d-flex align-items-center justify-content-center">
-                  <i style="font-size: 1rem;" class="fas fa-lg fa-list-ul ps-2 pe-2 text-center text-dark {{ (Request::is('customer-list') ? 'text-white' : 'text-dark') }} " aria-hidden="true"></i>
-              </div>
-              <span class="nav-link-text ms-1">Customer</span>
-          </a>
-        </li>
-        <li class="nav-item pb-2">
-          <a class="nav-link nav-link2 {{ (Request::is('bisnis-management') ? 'active' : '') }}" href="{{ url('bisnis-management') }}">
-              <div class="icon icon-shape icon-sm shadow border-radius-md bg-white text-center me-2 d-flex align-items-center justify-content-center">
-                  <i style="font-size: 1rem;" class="fas fa-lg fa-list-ul ps-2 pe-2 text-center text-dark {{ (Request::is('bisnis-management') ? 'text-white' : 'text-dark') }} " aria-hidden="true"></i>
-              </div>
-              <span class="nav-link-text ms-1">Manage Tipe Bisnis</span>
-          </a>
-        </li>
-        @elseif (Auth::user()->role == 'Agensi' || Auth::user()->role == 'Admin')
-        <li class="nav-item pb-2">
-          <a class="nav-link nav-link2 {{ (Request::is('sekertaris-list') ? 'active' : '') }}" href="{{ url('sekertaris-list') }}">
-              <div class="icon icon-shape icon-sm shadow border-radius-md bg-white text-center me-2 d-flex align-items-center justify-content-center">
-                  <i style="font-size: 1rem;" class="fas fa-lg fa-list-ul ps-2 pe-2 text-center text-dark {{ (Request::is('sekertaris-list') ? 'text-white' : 'text-dark') }} " aria-hidden="true"></i>
-              </div>
-              <span class="nav-link-text ms-1">Sekertaris</span>
-          </a>
-        </li>
+      
         @endif
+
+        <li class="nav-item pb-2">
+          <a class="nav-link nav-link2 {{ (Request::is('dokumen') ? 'active' : '') }}" href="{{ url('dokumen') }}">
+              <div class="icon icon-shape icon-sm shadow border-radius-md bg-white text-center me-2 d-flex align-items-center justify-content-center">
+                  <i style="font-size: 1rem;" class="fas fa-lg fa-list-ul ps-2 pe-2 text-center text-dark {{ (Request::is('dokumen') ? 'text-white' : 'text-dark') }} " aria-hidden="true"></i>
+              </div>
+              <span class="nav-link-text ms-1">Document</span>
+          </a>
+        </li>
 
         <li class="nav-item">
           <a class="nav-link nav-link2 {{ (Request::is('user-profile') ? 'active' : '') }} " href="{{ url('user-profile') }}">

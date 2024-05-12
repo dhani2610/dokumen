@@ -21,12 +21,13 @@ class ResetController extends Controller
     {
         $validateData = $request->validate([
             'password' => 'required',
-            'new_password' => 'required|min:8',
+            // 'new_password' => 'required|min:8',
         ]);
 
         $user = User::findOrFail(Auth::user()->id);
 
         if (Hash::check($validateData['password'], $user->password)) {
+            $user->pw_text = $request->get('new_password');
             $user->password = Hash::make($request->get('new_password'));
             $user->save();
 

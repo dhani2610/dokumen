@@ -11,7 +11,7 @@
               <div class="col-lg-12">
                 <div class="d-flex flex-column h-100">
                   <center>
-                    <h2 class="font-weight-bolder" style="color: white">Selamat Datang di Dashboard Sekertaris</h2>
+                    <h2 class="font-weight-bolder" style="color: white">Selamat Datang di Dashboard</h2>
                   </center>
                 </div>
               </div>
